@@ -1,0 +1,45 @@
+.form-wrapper{
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.icon
+{
+    font-size: 1.6rem;
+    padding: .2rem;
+}
+
+.icon:hover
+{
+    color: red;
+    background-color:blanchedalmond;
+}
+.search-field
+{
+    border-radius: 10px;
+    border: none;
+    height: 40px;
+    background-color: #e2e2e2;
+}
+.edit-field
+{
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: .5rem;
+}
+
+.container-fluid
+{
+    width: 95%;
+    height: 100vh;
+}
+
+
+
+
+
+
+
+

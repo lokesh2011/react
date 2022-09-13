@@ -1,0 +1,455 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="form-wrapper col-lg-4 col-12 mx-lg-3 mt-lg-4 mt-4 " *ngIf="disableSubmit">
+            <h3 class="text-center font-weight-bold my-2">Registration</h3>
+            <form [formGroup]="registration" (submit)="doRegistor()" class="p-2">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>First name</mat-label>
+                            <input matInput formControlName="fristname">
+                            <mat-error
+                                *ngIf="registration.get('fristname').errors?.required && registration.get('fristname').touched">
+                                Fristname is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="example-full-width w-100" appearance="fill">
+                            <mat-label>Last name</mat-label>
+                            <input matInput formControlName="lastname">
+                            <mat-error
+                                *ngIf="registration.get('lastname').errors?.required && registration.get('lastname').touched">
+                                Lastname is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                            <mat-error
+                                *ngIf="registration.get('email').errors?.email && registration.get('email').touched">
+                                Please Enter the Valid Email
+                            </mat-error>
+                            <mat-error *ngIf="registration.get('email').errors?.required">
+                                Email is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Contact Number</mat-label>
+                            <input matInput formControlName="contact">
+                            <mat-error
+                                *ngIf="registration.get('contact').errors?.required && registration.get('contact').touched">
+                                Contact is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <mat-radio-group aria-label="Select an option" formControlName="gender">
+                            <mat-label class="font-weight-bold">Gender</mat-label>
+                            <mat-radio-button value="male" class="pl-3">Male</mat-radio-button>
+                            <mat-radio-button value="female" class="pl-3">Female</mat-radio-button>
+                            <mat-error
+                                *ngIf="registration.get('gender').errors?.required && registration.get('gender').touched">
+                                Gender is required</mat-error>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dob">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error
+                                *ngIf="registration.get('dob').errors?.required && registration.get('dob').touched">
+                                D.O.B is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Qualification</mat-label>
+                            <mat-select name="qualification" formControlName="education">
+                                <mat-option *ngFor="let edu of education" [value]="edu.value">
+                                    {{edu.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('education').errors?.required && registration.get('education').touched">
+                                education is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Skills</mat-label>
+                            <mat-select multiple formControlName="skills">
+                                <mat-option *ngFor="let skill of skills" [value]="skill">{{skill}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('skills').errors?.required && registration.get('skills').touched">
+                                skills is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select formControlName="location" placeholder="Preffered Location" [multiple]="true">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="myControl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let loc of filteredOptions | async " [value]="loc">
+                                    {{loc}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('location').errors?.required && registration.get('location').touched">
+                                Location is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100 ">
+                            <input placeholder="Preffered Time" matInput aria-label="12hr format"
+                                [ngxTimepicker]="appendedToInput" [format]="12" formControlName="time">
+                            <ngx-material-timepicker #appendedToInput [appendToInput]="true"></ngx-material-timepicker>
+                            <mat-error
+                                *ngIf="registration.get('time').errors?.required && registration.get('time').touched">
+                                Time is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field class="example-full-width w-100" appearance="fill">
+                            <mat-label>Carrer Gap</mat-label>
+                            <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                                formControlName="cgap" [matAutocomplete]="auto" />
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filtered | async" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error
+                                *ngIf="registration.get('cgap').errors?.required && registration.get('cgap').touched">
+                                Carrer Gap is required</mat-error>
+                        </mat-form-field>
+                    </div>+,
+
+                    
+                    <div class="col-12 mb-2">
+                        <mat-form-field class=" w-100" appearance="fill">
+                            <mat-label>Choose Employee</mat-label>
+                            <input type="text" placeholder="Pick one" matInput formControlName="username"
+                                [matAutocomplete]="autotest">
+                            <mat-autocomplete autoActiveFirstOption #autotest="matAutocomplete">
+                                <mat-option *ngFor="let option of filterEmployee | async" [value]="option.name">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error
+                                *ngIf="registration.get('username').errors?.required && registration.get('username').touched">
+                                Username is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col-lg-6 col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="ufile">Upload Photo</label>
+                            <input type="file" class="form-control-file w-100" id="ufile" formControlName="photo"
+                                (change)="selectImg($event)">
+                        </div>
+                    </div> -->
+                    <div class="col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Address</mat-label>
+                            <textarea matInput placeholder="Ex. 100 Main St" formControlName="address"></textarea>
+                        </mat-form-field>
+                        <mat-error
+                            *ngIf="registration.get('address').errors?.required && registration.get('address').touched">
+                            Address is required</mat-error>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col- mb-2 mb-2">
+                        <mat-slide-toggle class="mt-3" formControlName="update"></mat-slide-toggle>
+                        <mat-label class="font-weight-bold ml-2">Update on What'sapp?</mat-label>
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-12 mb-2" *ngIf="registration.value.update">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Whatapp Number</mat-label>
+                            <input matInput formControlName="whatsapp">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 ml-2 mt-2 mb-2">
+                        <section class="example-section">
+                            <mat-checkbox class="example-margin" formControlName="condition"></mat-checkbox>
+                            <mat-label class="font-weight-bold ml-2">Accept Terms & Condition</mat-label>
+                            <mat-error
+                                *ngIf="registration.get('condition').errors?.required && registration.get('condition').touched">
+                                Please Accept the Condition</mat-error>
+                        </section>
+                    </div>
+                    <div class="col-12 text-center mb-2 mt-3 mb-2">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!registration.valid">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="form-wrapper col-lg-4 col-12 mx-lg-3 mt-lg-4 mt-4" *ngIf="disableEdit" #editform>
+            <h3 class="text-center font-weight-bold mt-2">Edit Form</h3>
+            <form [formGroup]="registration" (submit)="updateUser()">
+                <div class="row mt-3">
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>First name</mat-label>
+                            <input matInput formControlName="fristname">
+                            <mat-error
+                                *ngIf="registration.get('fristname').errors?.required && registration.get('fristname').touched">
+                                Fristname is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="example-full-width w-100" appearance="fill">
+                            <mat-label>Last name</mat-label>
+                            <input matInput formControlName="lastname">
+                            <mat-error
+                                *ngIf="registration.get('lastname').errors?.required && registration.get('lastname').touched">
+                                Lastname is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                            <mat-error
+                                *ngIf="registration.get('email').errors?.email && registration.get('email').touched">
+                                Please Enter the Valid Email
+                            </mat-error>
+                            <mat-error *ngIf="registration.get('email').errors?.required">
+                                Email is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Contact Number</mat-label>
+                            <input matInput formControlName="contact">
+                            <mat-error
+                                *ngIf="registration.get('contact').errors?.required && registration.get('contact').touched">
+                                Contact is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <mat-radio-group aria-label="Select an option" formControlName="gender">
+                            <mat-label class="font-weight-bold">Gender</mat-label>
+                            <mat-radio-button value="male" class="pl-3">Male</mat-radio-button>
+                            <mat-radio-button value="female" class="pl-3">Female</mat-radio-button>
+                            <mat-error
+                                *ngIf="registration.get('gender').errors?.required && registration.get('gender').touched">
+                                Gender is required</mat-error>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dob">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error
+                                *ngIf="registration.get('dob').errors?.required && registration.get('dob').touched">
+                                D.O.B is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Qualification</mat-label>
+                            <mat-select name="qualification" formControlName="education">
+                                <mat-option *ngFor="let edu of education" [value]="edu.value">
+                                    {{edu.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('education').errors?.required && registration.get('education').touched">
+                                education is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mt-2 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Skills</mat-label>
+                            <mat-select multiple formControlName="skills">
+                                <mat-option *ngFor="let skill of skills" [value]="skill">{{skill}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('skills').errors?.required && registration.get('skills').touched">
+                                skills is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field class="example-full-width w-100" appearance="fill">
+                            <mat-label>Carrer Gap</mat-label>
+                            <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                                formControlName="cgap" [matAutocomplete]="auto" />
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filtered | async" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-select formControlName="location" placeholder="Preffered Location" [multiple]="true">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="myControl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let loc of filteredOptions | async " [value]="loc">
+                                    {{loc}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="registration.get('location').errors?.required && registration.get('location').touched">
+                                Location is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12 mb-2">
+                        <mat-form-field appearance="fill" class="w-100 ">
+                            <input placeholder="Preffered Time" matInput aria-label="12hr format"
+                                [ngxTimepicker]="appendedToInput" [format]="12" formControlName="time">
+                            <ngx-material-timepicker #appendedToInput [appendToInput]="true">
+                            </ngx-material-timepicker>
+                            <mat-error
+                                *ngIf="registration.get('time').errors?.required && registration.get('time').touched">
+                                Time is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <mat-form-field class=" w-100" appearance="fill">
+                            <mat-label>Choose Employee</mat-label>
+                            <input type="text" placeholder="Pick one" matInput formControlName="username"
+                                [matAutocomplete]="autotest">
+                            <mat-autocomplete autoActiveFirstOption #autotest="matAutocomplete">
+                                <mat-option *ngFor="let option of filterEmployee | async" [value]="option.name">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error
+                                *ngIf="registration.get('username').errors?.required && registration.get('username').touched">
+                                Username is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col-lg-6 col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="ufile">Upload Photo</label>
+                            <input type="file" class="form-control-file w-100" id="ufile" formControlName="photo"
+                                (change)="selectImg($event)">
+                        </div>
+                    </div> -->
+                    <div class="col-12 mb-2">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Address</mat-label>
+                            <textarea matInput placeholder="Ex. 100 Main St" formControlName="address"></textarea>
+                            <mat-error
+                                *ngIf="registration.get('address').errors?.required && registration.get('address').touched">
+                                Address is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col- mb-2">
+                        <mat-slide-toggle class="mt-3" formControlName="update"></mat-slide-toggle>
+                        <mat-label class="font-weight-bold ml-2">Update on What'sapp?</mat-label>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-12 mb-2 " *ngIf="registration.value.update">
+                        <mat-form-field class="w-100" appearance="fill">
+                            <mat-label>Whatapp Number</mat-label>
+                            <input matInput formControlName="whatsapp">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 ml-2 mt-2 mb-2">
+                        <section class="example-section">
+                            <mat-checkbox class="example-margin" formControlName="condition"></mat-checkbox>
+                            <mat-label class="font-weight-bold ml-2">Accept Terms & Condition</mat-label>
+                            <mat-error
+                                *ngIf="registration.get('condition').errors?.required && registration.get('condition').touched">
+                                Please Accept the Condition</mat-error>
+                        </section>
+                    </div>
+                    <div class="col-12 text-center mb-2 mt-3">
+                        <button mat-raised-button color="primary" type="submit" (submit)="doRegistor()"
+                            *ngIf="disableEdit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="display-wrapper col-lg-6 offset-lg-1 col-12 d-flex flex-column justify-content-around">
+            <div class="row edit-field text-center mt-lg-0 mt-4 mx-lg-0 mx-2 justify-content-center">
+                <div class="col-lg-3 col-md-5 col-12">
+                    <input [(ngModel)]="searchVal" class="search-field w-100 mt-2" placeholder="Search Here..">
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-5 offset-md-1 col-12 text-center">
+                    <mat-form-field>
+                        <mat-label>Choose one</mat-label>
+                        <mat-select [(ngModel)]="searchType" class="select-field">
+                            <mat-option [value]="option.value" *ngFor="let option of filter">{{ option.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row edit-field mt-lg-0 mt-4 mx-lg-0 mx-2 py-lg-0 py-2"
+                *ngIf="(newUsers | filter : searchType : searchVal)?.length > 0">
+                <div class="col-12">
+                    <table class="table table-striped table-bordered table-hover table-responsive text-center my-3">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">S.no</th>
+                                <th scope="col">Frist Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Contact</th>
+                                <th scope="col">Gender</th>
+                                <th scope="col">D.O.B</th>
+                                <th scope="col">Qualification</th>
+                                <th scope="col">Gap</th>
+                                <th scope="col">Skills</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Employee</th>
+                                <!-- <th scope="col">Profile</th> -->
+                                <th scope="col">Update status</th>
+                                <th scope="col">Whatapp</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Terms</th>
+                                <th scope="col">Operations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of newUsers | filter : searchType : searchVal, index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{user.fristname}}</td>
+                                <td>{{user.lastname}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.contact}}</td>
+                                <td>{{user.gender}}</td>
+                                <td>{{user.dob}}</td>
+                                <td>{{user.education}}</td>
+                                <td>{{user.cgap}}</td>
+                                <td>{{user.skills}}</td>
+                                <td>{{user.location}}</td>
+                                <td>{{user.time}}</td>
+                                <td>{{user.username}}</td>
+                                <!-- <td><img src="assets/image/{{user.photo}}" alt=""></td> -->
+                                <td>{{user.update}}</td>
+                                <td>{{user.whatsapp}}</td>
+                                <td>{{user.address}}</td>
+                                <td>{{user.condition}}</td>
+                                <td><i class="fa-solid fa-pen-to-square icon mt-5" (click)="editUser(i)"></i><i
+                                        class="fa-solid fa-trash-can icon ml-3" (click)="deleteUser(i)"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row edit-field mt-lg-0 mt-4 mx-lg-0 mx-2 py-lg-0 py-2"
+                *ngIf="(newUsers | filter : searchType : searchVal)?.length === 0">
+                <div class="col-lg-6 offset-lg-1 col-12 text-center">
+                    <h3 class="text-danger font-weight-bold">Records Not Found</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
